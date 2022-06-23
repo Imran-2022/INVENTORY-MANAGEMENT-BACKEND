@@ -10,7 +10,7 @@ const db_pass = process.env.DB_PASSWORD;
 
 const uri = `mongodb+srv://${db_user}:${db_pass}@cluster0.tubwp.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-
+const userRouter=require('./routes/routes')
 async function run() {
     try {
         await client.connect();
@@ -26,17 +26,22 @@ async function run() {
 
 
         // count total data available 
-        app.get('/productCount', async (req, res) => {
-            const count = await dataCollection.countDocuments();
-            res.send({ count })
-        })
+        // app.get('/productCount', async (req, res) => {
+        //     const count = await dataCollection.countDocuments();
+        //     res.send({ count })
+        // })
+        app.use('/productCount',userRouter)
 
 
         // home route
-        app.get('/', async(req, res) => {
-            await res.sendFile(__dirname+"/view/homeRoute.html");
+        app.get('/', async (req, res) => {
+            await res.sendFile(__dirname + "/view/homeRoute.html");
         })
 
+        // route not matched
+        app.use('*', (req, res, next) => {
+            res.status(404).json({ message: "route not found/bad request" })
+        })
     } finally {
         //   await client.close();
     }
@@ -45,4 +50,4 @@ run().catch(console.dir);
 
 
 
-module.exports= app;
+module.exports = app;
