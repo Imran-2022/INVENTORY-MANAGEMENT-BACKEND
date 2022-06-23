@@ -19,20 +19,25 @@ async function run() {
         console.log("mongodb connected")
         const dataCollection = client.db("assignment11").collection("assignment11-data");
 
-        //   post 
 
+        //   post 
         app.post("/products", async (req, res) => {
             const result = await dataCollection.insertOne(req.body)
             res.send(result)
         })
 
-        // count total data available 
 
+        // count total data available 
         app.get('/productCount', async (req, res) => {
             const count = await dataCollection.countDocuments();
             res.send({ count })
         })
 
+
+        // home route
+        app.get('/', async(req, res) => {
+            await res.sendFile(__dirname+"/view/homeRoute.html");
+        })
 
     } finally {
         //   await client.close();
