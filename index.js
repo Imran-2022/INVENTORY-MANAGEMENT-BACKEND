@@ -1,11 +1,11 @@
 require("dotenv").config();
 const app = require('./app')
 const port = process.env.PORT || 8080
-const { DATABASE} = require('./models/connect.database')
+const { DATABASE } = require('./models/connect.database')
 
 async function run() {
-        await DATABASE.connect();
-        console.log("mongodb connected")
+    await DATABASE.connect();
+    console.log("mongodb connected")
 }
 
 run().catch(console.dir);
